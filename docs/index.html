@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>DevinHealth Log</title>
+<style>
+  :root { --bg: #ffffff; --fg: #1a1a1a; --muted: #666; --card: #f3f4f6; --accent: #1a73e8; --accent-fg: #fff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #121212; --fg: #eee; --muted: #aaa; --card: #1e1e1e; --accent: #8ab4f8; --accent-fg: #000; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 24px 16px; background: var(--bg); color: var(--fg);
+         font: 16px/1.5 system-ui, -apple-system, Roboto, sans-serif; }
+  main { max-width: 480px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  p.status { color: var(--muted); margin: 0 0 20px; }
+  .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .card h2 { font-size: 1.1rem; margin: 0 0 8px; }
+  dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; margin: 0; }
+  dt { color: var(--muted); }
+  dd { margin: 0; text-align: right; }
+  a.btn { display: block; text-align: center; text-decoration: none; padding: 16px; border-radius: 12px;
+          font-weight: 600; font-size: 1.1rem; margin-bottom: 12px; }
+  a.primary { background: var(--accent); color: var(--accent-fg); }
+  a.secondary { border: 2px solid var(--accent); color: var(--accent); }
+  code { word-break: break-all; font-size: 0.8rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1 id="title">Logging meal…</h1>
+  <p class="status" id="status">Opening the app. If nothing happens, tap the button below.</p>
+
+  <div class="card" id="summary" hidden>
+    <h2 id="food-name"></h2>
+    <dl id="nutrients"></dl>
+  </div>
+
+  <a class="btn primary" id="open-scheme" href="#">Log it</a>
+  <a class="btn secondary" id="open-intent" href="#">Log it (alternate method)</a>
+
+  <p><code id="target"></code></p>
+</main>
+
+<script>
+  // This page bounces an https:// link (which the Claude app will open) into an
+  // app deep link (which the Claude app won't open directly).
+  //
+  //   ?atiom=1                     -> test mode: opens a sample Atiom event
+  //   ?name=...&kcal=...&...       -> forwards the same query to devinhealth://log
+  var params = new URLSearchParams(location.search);
+
+  var LABELS = {
+    meal: "Meal", kcal: "Calories (kcal)", protein: "Protein (g)", carbs: "Carbs (g)",
+    fat: "Fat (g)", fiber: "Fiber (g)", sugar: "Sugar (g)", sodium: "Sodium (mg)"
+  };
+
+  var scheme, path;
+  if (params.get("atiom") === "1") {
+    scheme = "atiomapp";
+    path = "open?url=" + encodeURIComponent("https://sg.atiom.app/en/events/abcd1234/");
+    document.getElementById("title").textContent = "Atiom link test";
+  } else {
+    scheme = "devinhealth";
+    path = "log?" + params.toString();
+    showSummary();
+  }
+
+  var schemeUrl = scheme + "://" + path;
+  var intentUrl = "intent://" + path + "#Intent;scheme=" + scheme + ";end";
+
+  document.getElementById("open-scheme").href = schemeUrl;
+  document.getElementById("open-intent").href = intentUrl;
+  document.getElementById("target").textContent = schemeUrl;
+
+  // Chrome may block opening an app without a tap; the buttons are the fallback.
+  window.location.href = schemeUrl;
+
+  function showSummary() {
+    var name = params.get("name");
+    if (!name && !params.has("kcal")) {
+      document.getElementById("title").textContent = "No meal data in this link";
+      document.getElementById("status").textContent = "";
+      return;
+    }
+    document.getElementById("summary").hidden = false;
+    document.getElementById("food-name").textContent = name || "Meal";
+    var dl = document.getElementById("nutrients");
+    Object.keys(LABELS).forEach(function (key) {
+      if (!params.has(key)) return;
+      var dt = document.createElement("dt");
+      dt.textContent = LABELS[key];
+      var dd = document.createElement("dd");
+      dd.textContent = params.get(key);
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+  }
+</script>
+</body>
+</html>
