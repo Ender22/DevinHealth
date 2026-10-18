@@ -73,7 +73,18 @@ Reinstalling an APK built on another machine (e.g. CI) needs an uninstall first.
 - ~~Android App Links might make it one tap.~~ Verified, including from a tap inside the Claude app.
 - Repo is **public** — the page and any built APK would be publicly visible.
 
-## Link parameters (planned)
+## Google Health sync behaviour
+
+Nothing to push: the app writes straight into Health Connect (the "Logged ..." message appears
+only after the insert succeeded). Google Health (the Fitbit app, `com.fitbit.FitbitMobile`) then
+imports nutrition from Health Connect on its own schedule. Observed 2026-10-18: a record logged at
+10:53 was not in Google Health at 10:57 even after pull-to-refresh and the Food & drink refresh
+button, but appeared immediately after force-stopping and relaunching Google Health. So if a meal
+seems missing, swipe Google Health away from recents and reopen it, or just wait.
+
+Meal-time guess when the link has no `meal`: 05-09 breakfast, 10-15 lunch, 17-21 dinner, else snack.
+
+## Link parameters
 
 `name`, `kcal`, `protein`, `carbs`, `fat`, `fiber`, `sugar` (g), `sodium` (mg),
 `meal` (`breakfast` | `lunch` | `dinner` | `snack`; app guesses from time if missing).
