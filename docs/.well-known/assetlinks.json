@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.devinhealth",
+    "sha256_cert_fingerprints": [
+      "CC:AB:53:94:03:4E:77:33:25:DF:2A:B7:59:CA:0F:EC:C6:1F:C6:EA:F2:BB:4E:85:BD:7A:BC:B9:F7:47:3E:DE"
+    ]
+  }
+}]

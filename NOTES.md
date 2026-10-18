@@ -35,16 +35,30 @@ link and the page forwards it to the app.
       `claude/food-photo-nutrition-google-health-4qea1b`, folder `/docs`.
 - [ ] Test https://ender22.github.io/DevinHealth/?atiom=1 from inside the Claude app:
       does Atiom open automatically, or only via a button?
-- [ ] Android app (Kotlin + Compose): handle `devinhealth://log?...`, request
-      `WRITE_NUTRITION`, write `NutritionRecord`. Include a "log test meal" button to confirm
-      entries appear in Google Health.
+- [x] Android app (Kotlin + Compose) in `app/`: handles `devinhealth://log?...` and
+      `https://ender22.github.io/DevinHealth/?...` (App Link), requests nutrition permission,
+      writes a `NutritionRecord`, logs automatically with no review step. Has "Log test meal".
+      **Verified 2026-10-18 on the Pixel 7:** a `devinhealth://log?...` link produced a record
+      in Health Connect (attributed to DevinHealth) and Google Health showed "520 cals in".
+- [x] GitHub Actions workflow builds the debug APK on push (`.github/workflows/android.yml`).
+- [x] `docs/.well-known/assetlinks.json` with the debug-keystore fingerprint so the https link
+      can open the app directly once Pages is live (App Links verification).
 - [ ] Claude Project instructions that make Claude reply with the link format above.
-- [ ] Optional: build APK with GitHub Actions so it can be installed from the phone.
+
+## Build / install
+
+```
+./gradlew assembleDebug            # needs JDK 17+, Android SDK 36
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb shell am start -a android.intent.action.VIEW -d "devinhealth://log?name=Test&kcal=100&meal=snack"
+```
+
+Signed with the local debug keystore (SHA-256 `CC:AB:53:94:...:3E:DE`, see assetlinks.json).
+Reinstalling an APK built on another machine (e.g. CI) needs an uninstall first.
 
 ## Open questions / unverified
 
-- Google Health officially names MyFitnessPal/Cronometer as Health Connect food sources; an
-  open-source app reports custom `NutritionRecord`s also appear. Needs a real-device test.
+- ~~Do custom `NutritionRecord`s show in Google Health?~~ **Yes** — confirmed on device.
 - Whether Chrome lets the bounce page open the app automatically, or requires the button tap.
 - Android App Links (verified https → app directly) might make it one tap; unknown whether
   the Claude app honours them.
