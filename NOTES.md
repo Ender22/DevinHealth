@@ -40,8 +40,9 @@ link and the page forwards it to the app.
       update the fingerprint in both places.
 - [ ] (old) Enable GitHub Pages: Settings → Pages → Deploy from a branch →
       `claude/food-photo-nutrition-google-health-4qea1b`, folder `/docs`.
-- [ ] Test https://ender22.github.io/DevinHealth/?atiom=1 from inside the Claude app:
-      does Atiom open automatically, or only via a button?
+- [x] **End-to-end test from the Claude app done 2026-10-18:** photo of chicken paprikash ->
+      Claude replied with the link -> tap -> app logged it ("Logged breakfast: chicken paprikash").
+      The `?atiom=1` test mode is no longer needed.
 - [x] Android app (Kotlin + Compose) in `app/`: handles `devinhealth://log?...` and
       `https://ender22.github.io/DevinHealth/?...` (App Link), requests nutrition permission,
       writes a `NutritionRecord`, logs automatically with no review step. Has "Log test meal".
@@ -69,8 +70,7 @@ Reinstalling an APK built on another machine (e.g. CI) needs an uninstall first.
 - ~~Whether Chrome lets the bounce page open the app automatically.~~ **Yes** when Chrome is
   launched with the page URL (tested via a local server + `adb reverse`): it jumped straight
   to the app and the meal was logged, no button tap. Still to check from a tap inside Claude.
-- ~~Android App Links might make it one tap.~~ Verified working from an intent; still unknown
-  whether a tap inside the Claude app honours them (if not, Chrome auto-bounces anyway).
+- ~~Android App Links might make it one tap.~~ Verified, including from a tap inside the Claude app.
 - Repo is **public** — the page and any built APK would be publicly visible.
 
 ## Link parameters (planned)
