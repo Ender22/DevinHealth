@@ -31,7 +31,14 @@ link and the page forwards it to the app.
 - [x] `docs/index.html` bounce page. `?atiom=1` = test mode that opens a sample Atiom event
       (`atiomapp://open?url=...`) to prove the Claude → browser → app hop works before
       our app exists. Shows "Log it" (custom scheme) and "alternate" (`intent://`) buttons.
-- [ ] Enable GitHub Pages (needs the Ender22 account; the local gh/git login is Devin-Licastro, read-only): Settings → Pages → Deploy from a branch →
+- [x] GitHub Pages enabled (2026-10-18): https://ender22.github.io/DevinHealth/ serves `/docs` from
+      this branch. Git pushes as Ender22 via local `credential.username` (same trick as GuitarLegend).
+- [x] **Android App Links verified** on the Pixel 7: the https link opens DevinHealth directly, no
+      Chrome hop. Android needs `assetlinks.json` at the *host root*, so a second repo
+      `Ender22/Ender22.github.io` hosts https://ender22.github.io/.well-known/assetlinks.json
+      (the copy under `docs/.well-known/` is redundant but harmless). If the signing key changes,
+      update the fingerprint in both places.
+- [ ] (old) Enable GitHub Pages: Settings → Pages → Deploy from a branch →
       `claude/food-photo-nutrition-google-health-4qea1b`, folder `/docs`.
 - [ ] Test https://ender22.github.io/DevinHealth/?atiom=1 from inside the Claude app:
       does Atiom open automatically, or only via a button?
@@ -62,8 +69,8 @@ Reinstalling an APK built on another machine (e.g. CI) needs an uninstall first.
 - ~~Whether Chrome lets the bounce page open the app automatically.~~ **Yes** when Chrome is
   launched with the page URL (tested via a local server + `adb reverse`): it jumped straight
   to the app and the meal was logged, no button tap. Still to check from a tap inside Claude.
-- Android App Links (verified https → app directly) might make it one tap; unknown whether
-  the Claude app honours them.
+- ~~Android App Links might make it one tap.~~ Verified working from an intent; still unknown
+  whether a tap inside the Claude app honours them (if not, Chrome auto-bounces anyway).
 - Repo is **public** — the page and any built APK would be publicly visible.
 
 ## Link parameters (planned)
