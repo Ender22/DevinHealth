@@ -31,7 +31,7 @@ link and the page forwards it to the app.
 - [x] `docs/index.html` bounce page. `?atiom=1` = test mode that opens a sample Atiom event
       (`atiomapp://open?url=...`) to prove the Claude → browser → app hop works before
       our app exists. Shows "Log it" (custom scheme) and "alternate" (`intent://`) buttons.
-- [ ] Enable GitHub Pages: Settings → Pages → Deploy from a branch →
+- [ ] Enable GitHub Pages (needs the Ender22 account; the local gh/git login is Devin-Licastro, read-only): Settings → Pages → Deploy from a branch →
       `claude/food-photo-nutrition-google-health-4qea1b`, folder `/docs`.
 - [ ] Test https://ender22.github.io/DevinHealth/?atiom=1 from inside the Claude app:
       does Atiom open automatically, or only via a button?
@@ -43,7 +43,7 @@ link and the page forwards it to the app.
 - [x] GitHub Actions workflow builds the debug APK on push (`.github/workflows/android.yml`).
 - [x] `docs/.well-known/assetlinks.json` with the debug-keystore fingerprint so the https link
       can open the app directly once Pages is live (App Links verification).
-- [ ] Claude Project instructions that make Claude reply with the link format above.
+- [x] Claude Project instructions: `docs/CLAUDE_PROJECT_INSTRUCTIONS.md` (paste into the Project).
 
 ## Build / install
 
@@ -59,7 +59,9 @@ Reinstalling an APK built on another machine (e.g. CI) needs an uninstall first.
 ## Open questions / unverified
 
 - ~~Do custom `NutritionRecord`s show in Google Health?~~ **Yes** — confirmed on device.
-- Whether Chrome lets the bounce page open the app automatically, or requires the button tap.
+- ~~Whether Chrome lets the bounce page open the app automatically.~~ **Yes** when Chrome is
+  launched with the page URL (tested via a local server + `adb reverse`): it jumped straight
+  to the app and the meal was logged, no button tap. Still to check from a tap inside Claude.
 - Android App Links (verified https → app directly) might make it one tap; unknown whether
   the Claude app honours them.
 - Repo is **public** — the page and any built APK would be publicly visible.
