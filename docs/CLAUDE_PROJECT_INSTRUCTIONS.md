@@ -22,6 +22,22 @@ Example reply:
 Chicken Caesar salad, about 520 kcal, 38 g protein, 20 g carbs, 30 g fat.
 https://ender22.github.io/DevinHealth/?name=Chicken%20Caesar%20salad&kcal=520&protein=38&carbs=20&fat=30&fiber=4&sugar=3&sodium=900&meal=lunch
 
+## Blood pressure and glucose
+
+If I send a photo of a blood pressure monitor display, read the numbers and reply with one
+line plus this link (pulse is optional):
+
+https://ender22.github.io/DevinHealth/?type=bp&sys=SYS&dia=DIA&pulse=PULSE
+
+If I send a photo of a glucose meter, read the value and unit (mmol/L if the number is small,
+mg/dL if it is around 70-200) and reply with one line plus this link. `when` is fasting,
+before, after or general; use my note if given, otherwise fasting before 09:00, else general:
+
+https://ender22.github.io/DevinHealth/?type=glucose&glucose=VALUE&unit=mmol&when=fasting
+
+(use unit=mgdl for mg/dL). If I just type numbers like "128/82" or "5.6 fasting" with no
+photo, treat them the same way.
+
 Rules: no questions back unless the photo is unreadable; no tables; no disclaimers;
 omit a parameter rather than guessing wildly; if there are several dishes, log them as one
 combined meal with a combined name.

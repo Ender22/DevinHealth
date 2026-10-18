@@ -84,6 +84,23 @@ seems missing, swipe Google Health away from recents and reopen it, or just wait
 
 Meal-time guess when the link has no `meal`: 05-09 breakfast, 10-15 lunch, 17-21 dinner, else snack.
 
+## Blood pressure and glucose (added 2026-10-18)
+
+- Links: `?type=bp&sys=128&dia=82&pulse=66` and `?type=glucose&glucose=5.6&unit=mmol&when=fasting`
+  (unit optional: values under 30 are treated as mmol/L; `when` = fasting|before|after|general).
+  Same bounce page and App Link as meals.
+- Manual entry forms in the app for both, plus a "Last 30 days" card (readings + averages) read
+  back from Health Connect.
+- Written as BloodPressureRecord (+ HeartRateRecord for pulse) and BloodGlucoseRecord.
+- **Google Health shows glucose** (Health tab > Metabolic) but has **no blood pressure UI** at all,
+  even after granting it the Blood pressure read permission in Health Connect (which was off by
+  default and is now on). BP trends therefore live in the app's 30-day card.
+- Duplicate guard: Android re-delivers the launch link when the activity is recreated (reinstall,
+  restart-after-update, recents). `LinkLedger` remembers logged links for 48 h; a repeated link
+  shows an "already logged" note and needs a manual tap.
+- Test data from today (several 124/81, 118/76, 119/77 BP readings, two glucose readings, five
+  test meals) can be deleted per entry in Health Connect > Data and access.
+
 ## Link parameters
 
 `name`, `kcal`, `protein`, `carbs`, `fat`, `fiber`, `sugar` (g), `sodium` (mg),
