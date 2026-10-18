@@ -51,8 +51,8 @@ data class MealLink(
             "dinner" -> MealType.MEAL_TYPE_DINNER
             "snack" -> MealType.MEAL_TYPE_SNACK
             else -> when (now.hour) {
-                in 5..10 -> MealType.MEAL_TYPE_BREAKFAST
-                in 11..15 -> MealType.MEAL_TYPE_LUNCH
+                in 5..9 -> MealType.MEAL_TYPE_BREAKFAST
+                in 10..15 -> MealType.MEAL_TYPE_LUNCH
                 in 17..21 -> MealType.MEAL_TYPE_DINNER
                 else -> MealType.MEAL_TYPE_SNACK
             }
